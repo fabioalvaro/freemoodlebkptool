@@ -5,6 +5,25 @@ import commands
 import time
 import sys
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+
+    def disable(self):
+        self.HEADER = ''
+        self.OKBLUE = ''
+        self.OKGREEN = ''
+        self.WARNING = ''
+        self.FAIL = ''
+        self.ENDC = ''
+
+
+
+
 # zipa(diretorio_a_Ser_compactado, nome_do_backup )
 def f_zipa(a,file_name):
     global PT_DESTINO
@@ -22,32 +41,25 @@ def f_zipa(a,file_name):
     print  file_name+".zip  "+" Backup realizado! "
 
 def get_valor_da_linha( texto ):
-   # print "Texto na Funcao: "+ texto
     str_base = texto;
     str_agulha = "=";
-
     posicao = str_base.find(str_agulha)
     tamanho = len(texto)-2
-   # print "Posicao " + str(posicao)
-   # print "Tamanho " , len(texto)
-   # print "Texto Recuperado " + texto.find(texto, posicao,10)
-    v3 = texto[16:7]
-   # print "pedacao: (" + v3	+")"
-   # print "pedaco :",texto[posicao+1:tamanho]
+    #v3 = texto[16:7]
     retorno =texto[posicao+1:tamanho]
     return retorno
 
 def get_moodleData( config_file ):
     arq = open(config_file, 'r')
-    print arq
+   # print arq
     texto = arq.readlines()
     for linha in texto :	
         v1 = two = linha[0:14]
 	    #print (v1)
         if v1=="$CFG->dataroot" :
-            print("sim igual !!!!!")
+            # print("sim igual !!!!!")
             v2 = get_valor_da_linha(linha)
-            print "Valor "+v2
+            #print "Valor "+v2
             #v3 = v2.replace("'", "")
             removed = v2.replace("'", "")
             removed = removed.strip()
@@ -56,7 +68,67 @@ def get_moodleData( config_file ):
           #  newstr = v2.replace("M", " ")
            # print (removed)
     arq.close()
-    return  removed 
+    return  removed
+
+
+#Get Valor From config moodle
+def get_valor_config(file,size,text_needle):
+    myretorno ="0"
+    arq = open(file, 'r')
+    texto = arq.readlines()
+    removed = "" 
+    for linha in texto :	
+        v1 = two = linha[0:12]      
+        if v1==text_needle :           
+            v2 = get_valor_da_linha(linha)          
+            removed = v2.replace("'", "")
+            removed = removed.strip()          
+           # print removed.strip()       
+           # print (removed)
+            myretorno = removed
+    arq.close()    
+    return myretorno
+
+
+#MYSQL INFORMATION GET 
+# host,db,use,pass
+def get_mysql_parametros( config_file ):
+    my_array = [1, 'rebecca', 'allard','pass']    
+    
+    v_dbhost = get_valor_config(config_file,12,'$CFG->dbhost')    
+    my_array[0]=v_dbhost
+    
+    v_dbname = get_valor_config(config_file,12,'$CFG->dbname')    
+    my_array[1]=v_dbname      
+           
+    v_dbuser = get_valor_config(config_file,12,'$CFG->dbuser')    
+    my_array[2]=v_dbuser  
+    
+    v_dbpass = get_valor_config(config_file,12,'$CFG->dbpass')
+    my_array[3]=v_dbpass
+
+    return my_array
+#MYSQL INFORMATION GET
+
+
+#BACKUP DO MYSQL
+def backup_mysql(DB_HOST,DB_NAME,DB_USER,DB_PASS,SET_BACKUP_FILE_NAME):
+    stat=0
+    # echo mysqldump -vh$DB_HOST -u$DB_USER -p$DB_PASS $DB_NAME > $(date +%Y)/$(date +%m)/db_backup
+    #comando = 'mysqldump -vh'+DB_HOST+' -u'+DB_USER+' -p'+DB_PASS+' '+DB_NAME+' > '+SET_BACKUP_FILE_NAME
+    comando = 'mysqldump -vh'+DB_HOST+' -u'+DB_USER+' -p'+DB_PASS+' '+DB_NAME+' | gzip -9 -c  > '+SET_BACKUP_FILE_NAME+".gz"
+    #| gzip -c > prod_2012_08_20.dump.tgz
+    
+    
+    #comando='sudo zip -r '+ PT_DESTINO +'/'+file_name+'.zip  '+ a     
+    print (comando)
+    os.system(comando)  
+    
+  #  comando2 ='tar -zcvf '+SET_BACKUP_FILE_NAME+'.tar.gz '+SET_BACKUP_FILE_NAME
+  #  print (comando2)
+  #  os.system(comando2)  
+    
+    return stat
 
 
 def printme( str ):
@@ -68,7 +140,6 @@ def printme( str ):
 
 os.system("clear")
 
-os.system("pause")
 
 #veio parametro 1?
 #param1 = sys.argv[0]
@@ -162,6 +233,17 @@ config_file =dir_alvo+'/config.php'
 #arq = open('/home/fabioalvaro/python_aulas/config.php', 'r')
 
 
+#Procura os parametros do Mysql
+print "MYSQL SETTINGS"
+mysql_parametros =  get_mysql_parametros(config_file)
+print " host    " +mysql_parametros[0]+ bcolors.OKGREEN + "  SUCCESS" + bcolors.ENDC
+print " db_name " +mysql_parametros[1]+ bcolors.OKGREEN + "  SUCCESS" + bcolors.ENDC
+print " user    " +mysql_parametros[2]+ bcolors.OKGREEN + "  SUCCESS" + bcolors.ENDC
+print " pass    " +mysql_parametros[3]+ bcolors.OKGREEN + "  SUCCESS" + bcolors.ENDC
+
+
+
+
 
 
 #Qual o Moodle Data?
@@ -177,9 +259,6 @@ if not is_dir_moddata:
     exit()
 
 #Resumo
-
-
-
 ans=True
 while ans:
     print ""
@@ -217,6 +296,23 @@ f_zipa(dir_alvo,prefix_tool+dir_nome_zip+"_app")
 
 f_zipa(dir_moodle_data,prefix_tool+dir_nome_zip+"_md")
 
+#MYSQL Processo
+
+print(bcolors.OKGREEN + "SUCCESS" + bcolors.ENDC)
+destino_backup_file=PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql'
+#print destino_backup_file
+#exit()
+
+#realiza o backup
+backup_mysql(mysql_parametros[0],mysql_parametros[1],mysql_parametros[2],mysql_parametros[3],destino_backup_file)
+
+print "FIM AMIGAO...."
+
+#a_retorno = teste_array(config_file)
+#print a_retorno[1]
+
+exit()
+
 print "Fim do Processo"
 exit()
 #copia pasta
@@ -244,3 +340,6 @@ sys.stdout.write("\n")
    # Now you can call printme function
 #printme("I'm first call to user defined function!")
 #printme("Again second call to the same function")
+
+
+
