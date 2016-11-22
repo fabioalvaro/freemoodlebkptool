@@ -1,3 +1,5 @@
+#Developed by Fabio Alvaro November, 22th, 2016
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
