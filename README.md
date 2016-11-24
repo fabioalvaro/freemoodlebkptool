@@ -9,7 +9,10 @@ This is a command line tool to increase the time to backup and restore applicati
 git clone https://github.com/fabioalvaro/freemoodlebkptool.git ~/opt/moodlebkptool
 
 2)Create the link on system
+
 $ cd /usr/local/bin
+
 $ ln -s ~/opt/moodlebkptool/moodlerestoretool.py moodlerestoretool
+
 
 
