@@ -55,7 +55,14 @@ def get_valor_da_linha( texto ):
     posicao = str_base.find(str_agulha)
     tamanho = len(texto)-2
     retorno =texto[posicao+1:tamanho]
+    retorno = removeCaractere(retorno,";")
     return retorno
+
+def removeCaractere(line,char_needle):
+    for char in line:
+        if char in char_needle:
+            line = line.replace(char, '')
+    return line
 
 def get_moodleData( config_file ):
     arq = open(config_file, 'r')
