@@ -21,6 +21,11 @@ $ cd /usr/local/bin
 
 $ ln -s ~/opt/moodlebkptool/moodlerestoretool.py moodlerestoretool
 
+    # Installation on system scope
+    $ sudo git clone https://github.com/fabioalvaro/freemoodlebkptool.git /opt/freemoodlebkptool
+
+    
+
 # 3 Configuration Before use
 
 
