@@ -16,3 +16,7 @@ $ ln -s ~/opt/moodlebkptool/moodlerestoretool.py moodlerestoretool
 
 
 
+# Example of use of the Tool:
+    
+    #to Restore a Backup created
+    freemoodlerestoretool myApp01.mdlbkp.tar  /home/fabioalvaro/public_html/homemaranha /home/fabioalvaro/public_html/datamoodle/homemaranha_md 127.0.0.1 root mypassword homemaranha_db 
