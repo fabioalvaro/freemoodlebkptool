@@ -42,7 +42,7 @@ def empacota(destino_file_name,arquivos):
     global PT_DESTINO
     print PT_DESTINO
 
-    comando = 'tar -cvf '+PT_DESTINO+'/'+destino_file_name + ' -C '+ arquivos
+    comando = 'tar -cvf '+PT_DESTINO+'/'+destino_file_name + ' -C '+ PT_DESTINO + ' . ' + '--exclude=".directory"'
 
     os.system(comando)
     print  comando
@@ -280,7 +280,7 @@ arq1 = arq1 + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql.gz '
 empacota(prefix_tool+dir_name_limpo+".mdlbkp.tar" , arq1)
 
 #limpa Backups
-if 1 == 1:
+if 1 == 2:
     cmd_del1 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_app.tar.gz '
     cmd_del2 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_md.tar.gz '
     cmd_del3 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql.gz '
