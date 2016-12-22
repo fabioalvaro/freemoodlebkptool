@@ -143,8 +143,9 @@ if len(sys.argv) >= 3:
     param3 = sys.argv[2]
 else:
 	print "Error:"
-	print "voce precisa informar algum parametro, parametros nao informados"
-	print " Syntax ler2.py diretorio_app cmd1 Nome_Amigavel_do_Backup"
+    print "you need to inform the parameters to execute the backup!!!"
+	print " Syntax: ler2.py diretorio_app cmd1 Nome_Amigavel_do_Backup"
+    print "       $ freemoodlebkptool /var/www/moodleap001 mySuperBackupName"
 	exit()
 	
 
@@ -153,9 +154,9 @@ PT_DESTINO = os.environ.get('PT_DESTINO')
 
 
 if PT_DESTINO is None:
-    print "ERRO: A VARIAVEL DESTINO GLOBAL  PT_DESTINO NAO FOI DEFINIDA!";
+    print "ERROR: THE GLOBAL VARIABLE PT_DESTINO WAS NOT DEFINED!";
     print "USE $ export PT_DESTINO=/PATH/DOS/BACKUPS";
-    print "E TENTE NOVAMENTE";
+    print "AND TRY AGAIN";
     print "====================="
     exit()
 
@@ -172,20 +173,20 @@ print ("MOODLE APPLICATION DOWNLOAD TOOL v.1")
 print ("")
 print ("========================================")
 #print ("SCRIPT        ["+ param1)
-print ("APP DIRETORIO    ["+ param2+"]")
-print ("NOME DOS BACKUPS ["+ param3+"]")
-print ("PASTA DESTINO DO SHELL ["+ PT_DESTINO+"]")
+print ("APP DIRECTORY    ["+ param2+"]")
+print ("BACKUP NAME ["+ param3+"]")
+print ("TARGET FOLDER ON SHELL ["+ PT_DESTINO+"]")
 
 
 #valida o diretorio
 if not is_dir:
-    print "Erro: Diretorio invalido!!!"
+    print "Erro: Invalid Directory!!!"
     exit()
 
 #existe um arquivo de configuracao dentro?
 exist_config_file =os.path.exists(dir_alvo+'/config.php')
 if not exist_config_file:
-    print "Erro: Esse Diretorio nao tem configuracao moodle verifique!!!"
+    print "Error: This Directory seems not be a Moodle directory. Please verify"
     exit()
 
     #nome do diretorio
@@ -237,15 +238,15 @@ while ans:
     print ""
     print ""
     print ""
-    print (""" Deseja executar o Backup da Aplicacao Moodle acima? (y/N)	""")
+    print (""" did you want run the backup tool for the environment above? (y/N)	""")
     ans=raw_input("Escolha: ") 
     if ans=="y" or ans=="Y":   
-        print("\n Student Added")
+        print("\n Lets Go")
         ans=False
     elif ans !="":
-      print("\n Opcao Invalida!")
+      print("\n Invalid option!")
     elif ans =="":
-      print("\n Saiu sem fazer nada")
+      print("\n exit without execute.")
       exit()        
 
 print 'starting the work......'
