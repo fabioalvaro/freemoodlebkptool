@@ -80,7 +80,7 @@ def restore_database():
     comando = 'mysql -h' + c_localhost + ' -u' + c_user + ' -p' + c_pass + ' ' + c_dbname + ' -v < '+TMP_FOLDER+EXTRAPATH+'/'+arquivo_sql
     print "SQL to Restore: "+comando
     #print "mysql -h127.0.0.1 -uroot -ptoor ze_do_caroco -v < /usr/tmp/asd/data/backups/*.sql"
-    
+
     os.system(comando)
     #os.system("mysql -h127.0.0.1 -uroot -ptoor ze_do_caroco -v < /usr/tmp/asd/data/backups/*.sql")
 

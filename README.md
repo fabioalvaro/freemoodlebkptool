@@ -13,6 +13,9 @@ This is a command line tool to increase the time to backup and restore applicati
 
 
 # 2)Install
+
+#Globally
+
 git clone https://github.com/fabioalvaro/freemoodlebkptool.git ~/opt/moodlebkptool
 
 2)Create the link on system
@@ -25,6 +28,23 @@ $ ln -s ~/opt/moodlebkptool/moodlerestoretool.py moodlerestoretool
     $ sudo git clone https://github.com/fabioalvaro/freemoodlebkptool.git /opt/freemoodlebkptool
 
     
+#Locally
+
+How to Install Locally on your default user:
+1)Download the zip version
+    cd ~
+    wget https://github.com/slackwarecps/freemoodlebkptool/archive/master.zip
+    unzip master 
+
+2)Unzip the package
+3)Create a simbolic link to binary
+rm ~/bin/freemoodlebkptool
+rm ~/bin/freemoodlerestoretool
+ln -s freemoodlebkptool-master/freemoodlebkptool.py  ~/bin/freemoodlebkptool
+ln -s freemoodlebkptool-master/freemoodlerestoretool.py  ~/bin/freemoodlerestoretool 
+
+
+4)use it!
 
 # 3 Configuration Before use
 
