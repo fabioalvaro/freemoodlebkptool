@@ -142,11 +142,11 @@ if len(sys.argv) >= 3:
     param2 = sys.argv[1]
     param3 = sys.argv[2]
 else:
-	print "Error:"
+    print "Error:"
     print "you need to inform the parameters to execute the backup!!!"
-	print " Syntax: ler2.py diretorio_app cmd1 Nome_Amigavel_do_Backup"
+    print " Syntax: ler2.py diretorio_app cmd1 Nome_Amigavel_do_Backup"
     print "       $ freemoodlebkptool /var/www/moodleap001 mySuperBackupName"
-	exit()
+    exit()
 	
 
 #LER DESTINO NA VARIAVEL DE AMBIENTE
