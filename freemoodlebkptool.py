@@ -29,7 +29,8 @@ def f_zipa(a,file_name):
     global PT_DESTINO
     #comando='sudo zip -r '+ PT_DESTINO +'/'+file_name+'.zip  '+ a
     comando='tar -zcvf '+ PT_DESTINO +'/'+file_name+'.tar.gz -C '+ a+' .'
-
+    print comando
+    exit()
      
     print (comando)
     os.system(comando)    
