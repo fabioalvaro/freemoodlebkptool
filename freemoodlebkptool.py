@@ -22,21 +22,32 @@ class bcolors:
         self.ENDC = ''
 
 
-def header_app():
-    print ""
-    print '========================='
-    print "MOODLE BACKUP TOOL 1.0"
-    print '========================='
-    print ("")
 
 
-# compress the file
-
+# zipa(diretorio_a_Ser_compactado, nome_do_backup )
 def f_zipa(a,file_name):
     global PT_DESTINO
-    comando='tar -zcvf '+ PT_DESTINO +'/'+file_name+'.tar.gz -C ' + a+' .'
+    #comando='sudo zip -r '+ PT_DESTINO +'/'+file_name+'.zip  '+ a
+    comando='tar -zcvf '+ PT_DESTINO +'/'+file_name+'.tar.gz -C '+ a+' .'
+
+     
+    print (comando)
     os.system(comando)    
-    print file_name+".zip  "+" Backup Done! "
+    print  file_name+".zip  "+" Backup realizado! "
+
+
+# zipa(diretorio_a_Ser_compactado, nome_do_backup )
+def empacota(destino_file_name,arquivos):
+    global PT_DESTINO
+    print PT_DESTINO
+
+    comando = 'tar -cvf '+PT_DESTINO+'/'+destino_file_name + ' '+ arquivos
+
+    os.system(comando)
+    print  comando
+
+
+
 
 def get_valor_da_linha( texto ):
     str_base = texto;
@@ -44,7 +55,14 @@ def get_valor_da_linha( texto ):
     posicao = str_base.find(str_agulha)
     tamanho = len(texto)-2
     retorno =texto[posicao+1:tamanho]
+    retorno = removeCaractere(retorno,";")
     return retorno
+
+def removeCaractere(line,char_needle):
+    for char in line:
+        if char in char_needle:
+            line = line.replace(char, '')
+    return line
 
 def get_moodleData( config_file ):
     arq = open(config_file, 'r')
@@ -52,13 +70,14 @@ def get_moodleData( config_file ):
     texto = arq.readlines()
     for linha in texto :	
         v1 = two = linha[0:14]
-        #print (v1)
+	    #print (v1)
         if v1=="$CFG->dataroot" :
             v2 = get_valor_da_linha(linha)
             removed = v2.replace("'", "")
             removed = removed.strip()
+
     arq.close()
-    return removed
+    return  removed
 
 
 #Get Valor From config moodle
@@ -72,7 +91,9 @@ def get_valor_config(file,size,text_needle):
         if v1==text_needle :           
             v2 = get_valor_da_linha(linha)          
             removed = v2.replace("'", "")
-            removed = removed.strip()
+            removed = removed.strip()          
+           # print removed.strip()       
+           # print (removed)
             myretorno = removed
     arq.close()    
     return myretorno
@@ -102,45 +123,42 @@ def get_mysql_parametros( config_file ):
 #BACKUP DO MYSQL
 def backup_mysql(DB_HOST,DB_NAME,DB_USER,DB_PASS,SET_BACKUP_FILE_NAME):
     stat=0
+
     comando = 'mysqldump -vh'+DB_HOST+' -u'+DB_USER+' -p'+DB_PASS+' '+DB_NAME+' | gzip -9 -c  > '+SET_BACKUP_FILE_NAME+".gz"
+
     print (comando)
     os.system(comando)
+
     return stat
 
 
-#Clean the screen
+#limpa a tela
+
 os.system("clear")
 
-
-#arrive the param 1?
 
 if len(sys.argv) >= 3:
     param1 = sys.argv[0]
     param2 = sys.argv[1]
     param3 = sys.argv[2]
 else:
-    print "Error:"
-    print "You must to inform any param! Error parameter not valid."
-    print ""
-    exit()
+	print "Error:"
+	print "voce precisa informar algum parametro, parametros nao informados"
+	print " Syntax ler2.py diretorio_app cmd1 Nome_Amigavel_do_Backup"
+	exit()
+	
 
-
-#Read the Environment Variable
+#LER DESTINO NA VARIAVEL DE AMBIENTE
 PT_DESTINO = os.environ.get('PT_DESTINO')
 
 
 if PT_DESTINO is None:
-
-    print "ERROR: was not defined the Variable PT_DESTINO";
-    print "use:  $ export PT_DESTINO=/PATH_FILE/BACKUPS";
-    print "and try again.";
+    print "ERRO: A VARIAVEL DESTINO GLOBAL  PT_DESTINO NAO FOI DEFINIDA!";
+    print "USE $ export PT_DESTINO=/PATH/DOS/BACKUPS";
+    print "E TENTE NOVAMENTE";
     print "====================="
     exit()
 
-
-
-#print "Conteudo da Variavel PATH " + PT_DESTINO
-#exit()
 
 #pega variaveis
 dir_alvo =param2
@@ -150,21 +168,13 @@ dir_alvo =param2
 is_dir =os.path.isdir(dir_alvo)
 exist_dir =os.path.exists(dir_alvo)
 
-
-header_app()
+print ("MOODLE APPLICATION DOWNLOAD TOOL v.1")
+print ("")
 print ("========================================")
 #print ("SCRIPT        ["+ param1)
 print ("APP DIRETORIO    ["+ param2+"]")
 print ("NOME DOS BACKUPS ["+ param3+"]")
 print ("PASTA DESTINO DO SHELL ["+ PT_DESTINO+"]")
-
-
-
-#diretorio valido?
-
-#is_dir = print(os.path.isdir(dir_alvo))
-#exist_dir = print(os.path.exists(dir_alvo))
-
 
 
 #valida o diretorio
@@ -194,10 +204,6 @@ dir_nome_zip = dir_name_limpo
 #config File
 config_file =dir_alvo+'/config.php'
 
-
-
-
-#arq = open('/home/fabioalvaro/python_aulas/config.php', 'r')
 
 
 #Procura os parametros do Mysql
@@ -231,18 +237,18 @@ while ans:
     print ""
     print ""
     print ""
-
-    print (""" Did you want to run the Backup as showned above? (y/N)	""")
+    print (""" Deseja executar o Backup da Aplicacao Moodle acima? (y/N)	""")
     ans=raw_input("Escolha: ") 
     if ans=="y" or ans=="Y":   
-        print("\n Yes lets go...")
+        print("\n Student Added")
         ans=False
     elif ans !="":
-      print("\n invalid option!")
+      print("\n Opcao Invalida!")
     elif ans =="":
-      print("\n exit, without to do nothing")
+      print("\n Saiu sem fazer nada")
       exit()        
 
+print 'starting the work......'
 
 
 #faz backup do app
@@ -251,6 +257,8 @@ f_zipa(dir_alvo,prefix_tool+dir_nome_zip+"_app")
 
 #faz backup do Moodle Data
 
+
+
 f_zipa(dir_moodle_data,prefix_tool+dir_nome_zip+"_md")
 
 #MYSQL Processo
@@ -258,13 +266,36 @@ f_zipa(dir_moodle_data,prefix_tool+dir_nome_zip+"_md")
 print(bcolors.OKGREEN + "SUCCESS" + bcolors.ENDC)
 destino_backup_file=PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql'
 
-
 #realiza o backup
 backup_mysql(mysql_parametros[0],mysql_parametros[1],mysql_parametros[2],mysql_parametros[3],destino_backup_file)
 
+#Empacota Tudo em um unico arquivo
+arq1 = ""
+arq1 = arq1 + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_app.tar.gz '
+arq1 = arq1 + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_md.tar.gz '
+arq1 = arq1 + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql.gz '
 
+empacota(prefix_tool+dir_name_limpo+".mdlbkp.tar" , arq1)
 
-print "End of Process"
+#limpa Backups
+if 1 == 1:
+    cmd_del1 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_app.tar.gz '
+    cmd_del2 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_md.tar.gz '
+    cmd_del3 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql.gz '
+    os.system(cmd_del1)
+    os.system(cmd_del2)
+    os.system(cmd_del3)
+
+print ("")
+print ("")
+print ("")
+print ("")
+print ("MOODLE APPLICATION DOWNLOAD TOOL v.1")
+print ("")
+print ("========================================")
+print "End of process"
+print "========================================="
+print "Check if the backup file was created on:"
+print "[" +PT_DESTINO+'/'+prefix_tool+dir_name_limpo+".mdlbkp.tar"+"]"
+
 exit()
-
-
