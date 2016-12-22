@@ -226,24 +226,17 @@ while ans:
     print ""
     print ""
     print ""
-    print (""" Deseja executar o Backup da Aplicacao Moodle acima? (y/N)	""")
+
+    print (""" Did you want to run the Backup as showned above? (y/N)	""")
     ans=raw_input("Escolha: ") 
     if ans=="y" or ans=="Y":   
-        print("\n Student Added")
+        print("\n Yes lets go...")
         ans=False
     elif ans !="":
-      print("\n Opcao Invalida!")
+      print("\n invalid option!")
     elif ans =="":
-      print("\n Saiu sem fazer nada")
+      print("\n exit, without to do nothing")
       exit()        
-
-print 'passou...'
-
-
-
-#print "Maravilha senta o pau Arnaldo!"
-#exit()
-#Agora ja era.... senta o pau!!!
 
 
 
@@ -253,56 +246,20 @@ f_zipa(dir_alvo,prefix_tool+dir_nome_zip+"_app")
 
 #faz backup do Moodle Data
 
-#print dir_moodle_data,prefix_tool+dir_nome_zip+"_md"
-
-
 f_zipa(dir_moodle_data,prefix_tool+dir_nome_zip+"_md")
 
 #MYSQL Processo
 
 print(bcolors.OKGREEN + "SUCCESS" + bcolors.ENDC)
 destino_backup_file=PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql'
-#print destino_backup_file
-#exit()
+
 
 #realiza o backup
 backup_mysql(mysql_parametros[0],mysql_parametros[1],mysql_parametros[2],mysql_parametros[3],destino_backup_file)
 
-print "FIM AMIGAO...."
 
-#a_retorno = teste_array(config_file)
-#print a_retorno[1]
 
+print "End of Process"
 exit()
-
-print "Fim do Processo"
-exit()
-#copia pasta
-# /home/fabioalvaro/android-studio
-
-#barra de Progresso 
-toolbar_width = 40
-
-# setup toolbar
-sys.stdout.write("[%s]" % (" " * toolbar_width))
-sys.stdout.flush()
-sys.stdout.write("\b" * (toolbar_width+1)) # return to start of line, after '['
-
-for i in xrange(toolbar_width):
-    time.sleep(0.1) # do real work here
-    # update the bar
-    sys.stdout.write("-")
-    sys.stdout.flush()
-
-sys.stdout.write("\n")
-
-
-
-
-   # Now you can call printme function
-#printme("I'm first call to user defined function!")
-#printme("Again second call to the same function")
-
-
 
 
