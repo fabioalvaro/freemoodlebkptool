@@ -34,18 +34,27 @@ How to Install Locally on your default user:
 1)Download the zip version
     cd ~
     wget https://github.com/slackwarecps/freemoodlebkptool/archive/master.zip
-    unzip master 
+    
 
 2)Unzip the package
+    unzip master 
 3)Create a simbolic link to binary
-rm ~/bin/freemoodlebkptool
-rm ~/bin/freemoodlerestoretool
-ln -s freemoodlebkptool-master/freemoodlebkptool.py  ~/bin/freemoodlebkptool
-ln -s freemoodlebkptool-master/freemoodlerestoretool.py  ~/bin/freemoodlerestoretool 
+
+    rm ~/bin/freemoodlebkptool
+
+    rm ~/bin/freemoodlerestoretool
+
+    ln -s freemoodlebkptool-master/freemoodlebkptool.py  ~/bin/freemoodlebkptool
+
+    ln -s freemoodlebkptool-master/freemoodlerestoretool.py  ~/bin/freemoodlerestoretool 
 
 
 4)use it!
-
+    $ freemoodlebkptool
+    OR
+    $ freemoodlerestoretool
+    
+    
 # 3 Configuration Before use
 
 
