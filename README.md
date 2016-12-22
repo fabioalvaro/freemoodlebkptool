@@ -14,9 +14,11 @@ This is a command line tool to increase the time to backup and restore applicati
 
 # 2)Install
 
-#Globally
+#Globally (It Needs the Root Permissions! )
 
-    $git clone https://github.com/fabioalvaro/freemoodlebkptool.git ~/opt/moodlebkptool
+    $ sudo git clone https://github.com/fabioalvaro/freemoodlebkptool.git ~/opt/moodlebkptool
+    $ sudo /opt/freemoodlebkptool/install.sh 
+
 
 2)Create the link on system
 
