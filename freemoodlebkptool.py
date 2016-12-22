@@ -22,7 +22,12 @@ class bcolors:
         self.ENDC = ''
 
 
-
+def header_app():
+    print ""
+    print '========================='
+    print "MOODLE BACKUP TOOL 1.0"
+    print '========================='
+    print ("")
 
 
 # compress the file
@@ -31,7 +36,7 @@ def f_zipa(a,file_name):
     global PT_DESTINO
     comando='tar -zcvf '+ PT_DESTINO +'/'+file_name+'.tar.gz -C ' + a+' .'
     os.system(comando)    
-    print file_name+".zip  "+" Backup realizado! "
+    print file_name+".zip  "+" Backup Done! "
 
 def get_valor_da_linha( texto ):
     str_base = texto;
@@ -116,7 +121,6 @@ if len(sys.argv) >= 3:
 else:
     print "Error:"
     print "You must to inform any param! Error parameter not valid."
-
     print ""
     exit()
 
@@ -126,9 +130,10 @@ PT_DESTINO = os.environ.get('PT_DESTINO')
 
 
 if PT_DESTINO is None:
-    print "ERRO: A VARIAVEL DESTINO GLOBAL  PT_DESTINO NAO FOI DEFINIDA!";
-    print "USE $ export PT_DESTINO=/PATH/DOS/BACKUPS";
-    print "E TENTE NOVAMENTE";
+
+    print "ERROR: was not defined the Variable PT_DESTINO";
+    print "use:  $ export PT_DESTINO=/PATH_FILE/BACKUPS";
+    print "and try again.";
     print "====================="
     exit()
 
@@ -145,8 +150,8 @@ dir_alvo =param2
 is_dir =os.path.isdir(dir_alvo)
 exist_dir =os.path.exists(dir_alvo)
 
-print ("MOODLE APPLICATION DOWNLOAD")
-print ("")
+
+header_app()
 print ("========================================")
 #print ("SCRIPT        ["+ param1)
 print ("APP DIRETORIO    ["+ param2+"]")
