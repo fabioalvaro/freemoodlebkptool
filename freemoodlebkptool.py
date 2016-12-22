@@ -30,7 +30,7 @@ def f_zipa(a,file_name):
     #comando='sudo zip -r '+ PT_DESTINO +'/'+file_name+'.zip  '+ a
     comando='tar -zcvf '+ PT_DESTINO +'/'+file_name+'.tar.gz -C '+ a+' .'
     print comando
-    exit()
+    #exit()
      
     print (comando)
     os.system(comando)    
@@ -42,7 +42,7 @@ def empacota(destino_file_name,arquivos):
     global PT_DESTINO
     print PT_DESTINO
 
-    comando = 'tar -cvf '+PT_DESTINO+'/'+destino_file_name + ' '+ arquivos
+    comando = 'tar -cvf '+PT_DESTINO+'/'+destino_file_name + ' -C '+ arquivos
 
     os.system(comando)
     print  comando
