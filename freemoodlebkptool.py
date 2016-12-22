@@ -47,7 +47,7 @@ def get_moodleData( config_file ):
     texto = arq.readlines()
     for linha in texto :	
         v1 = two = linha[0:14]
-	    #print (v1)
+        #print (v1)
         if v1=="$CFG->dataroot" :
             v2 = get_valor_da_linha(linha)
             removed = v2.replace("'", "")
@@ -114,12 +114,12 @@ if len(sys.argv) >= 3:
     param2 = sys.argv[1]
     param3 = sys.argv[2]
 else:
-	print "Error:"
+    print "Error:"
     print "You must to inform any param! Error parameter not valid."
 
     print ""
-	exit()
-	
+    exit()
+
 
 #Read the Environment Variable
 PT_DESTINO = os.environ.get('PT_DESTINO')
