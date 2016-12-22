@@ -24,30 +24,14 @@ class bcolors:
 
 
 
-# zipa(diretorio_a_Ser_compactado, nome_do_backup )
+
+# compress the file
+
 def f_zipa(a,file_name):
     global PT_DESTINO
-    #comando='sudo zip -r '+ PT_DESTINO +'/'+file_name+'.zip  '+ a
-    comando='tar -zcvf '+ PT_DESTINO +'/'+file_name+'.tar.gz -C '+ a+' .'
-
-     
-    print (comando)
+    comando='tar -zcvf '+ PT_DESTINO +'/'+file_name+'.tar.gz -C ' + a+' .'
     os.system(comando)    
-    print  file_name+".zip  "+" Backup realizado! "
-
-
-# zipa(diretorio_a_Ser_compactado, nome_do_backup )
-def empacota(destino_file_name,arquivos):
-    global PT_DESTINO
-    print PT_DESTINO
-
-    comando = 'tar -cvf '+PT_DESTINO+'/'+destino_file_name + ' '+ arquivos
-
-    os.system(comando)
-    print  comando
-
-
-
+    print file_name+".zip  "+" Backup realizado! "
 
 def get_valor_da_linha( texto ):
     str_base = texto;
@@ -55,14 +39,7 @@ def get_valor_da_linha( texto ):
     posicao = str_base.find(str_agulha)
     tamanho = len(texto)-2
     retorno =texto[posicao+1:tamanho]
-    retorno = removeCaractere(retorno,";")
     return retorno
-
-def removeCaractere(line,char_needle):
-    for char in line:
-        if char in char_needle:
-            line = line.replace(char, '')
-    return line
 
 def get_moodleData( config_file ):
     arq = open(config_file, 'r')
@@ -75,9 +52,8 @@ def get_moodleData( config_file ):
             v2 = get_valor_da_linha(linha)
             removed = v2.replace("'", "")
             removed = removed.strip()
-
     arq.close()
-    return  removed
+    return removed
 
 
 #Get Valor From config moodle
@@ -91,9 +67,7 @@ def get_valor_config(file,size,text_needle):
         if v1==text_needle :           
             v2 = get_valor_da_linha(linha)          
             removed = v2.replace("'", "")
-            removed = removed.strip()          
-           # print removed.strip()       
-           # print (removed)
+            removed = removed.strip()
             myretorno = removed
     arq.close()    
     return myretorno
@@ -123,19 +97,17 @@ def get_mysql_parametros( config_file ):
 #BACKUP DO MYSQL
 def backup_mysql(DB_HOST,DB_NAME,DB_USER,DB_PASS,SET_BACKUP_FILE_NAME):
     stat=0
-
     comando = 'mysqldump -vh'+DB_HOST+' -u'+DB_USER+' -p'+DB_PASS+' '+DB_NAME+' | gzip -9 -c  > '+SET_BACKUP_FILE_NAME+".gz"
-
     print (comando)
     os.system(comando)
-
     return stat
 
 
-#limpa a tela
-
+#Clean the screen
 os.system("clear")
 
+
+#arrive the param 1?
 
 if len(sys.argv) >= 3:
     param1 = sys.argv[0]
@@ -143,12 +115,13 @@ if len(sys.argv) >= 3:
     param3 = sys.argv[2]
 else:
 	print "Error:"
-	print "voce precisa informar algum parametro, parametros nao informados"
-	print " Syntax ler2.py diretorio_app cmd1 Nome_Amigavel_do_Backup"
+    print "You must to inform any param! Error parameter not valid."
+
+    print ""
 	exit()
 	
 
-#LER DESTINO NA VARIAVEL DE AMBIENTE
+#Read the Environment Variable
 PT_DESTINO = os.environ.get('PT_DESTINO')
 
 
@@ -160,6 +133,10 @@ if PT_DESTINO is None:
     exit()
 
 
+
+#print "Conteudo da Variavel PATH " + PT_DESTINO
+#exit()
+
 #pega variaveis
 dir_alvo =param2
 
@@ -168,13 +145,21 @@ dir_alvo =param2
 is_dir =os.path.isdir(dir_alvo)
 exist_dir =os.path.exists(dir_alvo)
 
-print ("MOODLE APPLICATION DOWNLOAD TOOL v.1")
+print ("MOODLE APPLICATION DOWNLOAD")
 print ("")
 print ("========================================")
 #print ("SCRIPT        ["+ param1)
 print ("APP DIRETORIO    ["+ param2+"]")
 print ("NOME DOS BACKUPS ["+ param3+"]")
 print ("PASTA DESTINO DO SHELL ["+ PT_DESTINO+"]")
+
+
+
+#diretorio valido?
+
+#is_dir = print(os.path.isdir(dir_alvo))
+#exist_dir = print(os.path.exists(dir_alvo))
+
 
 
 #valida o diretorio
@@ -204,6 +189,10 @@ dir_nome_zip = dir_name_limpo
 #config File
 config_file =dir_alvo+'/config.php'
 
+
+
+
+#arq = open('/home/fabioalvaro/python_aulas/config.php', 'r')
 
 
 #Procura os parametros do Mysql
@@ -248,7 +237,14 @@ while ans:
       print("\n Saiu sem fazer nada")
       exit()        
 
-print 'starting the work......'
+print 'passou...'
+
+
+
+#print "Maravilha senta o pau Arnaldo!"
+#exit()
+#Agora ja era.... senta o pau!!!
+
 
 
 #faz backup do app
@@ -257,6 +253,7 @@ f_zipa(dir_alvo,prefix_tool+dir_nome_zip+"_app")
 
 #faz backup do Moodle Data
 
+#print dir_moodle_data,prefix_tool+dir_nome_zip+"_md"
 
 
 f_zipa(dir_moodle_data,prefix_tool+dir_nome_zip+"_md")
@@ -265,37 +262,47 @@ f_zipa(dir_moodle_data,prefix_tool+dir_nome_zip+"_md")
 
 print(bcolors.OKGREEN + "SUCCESS" + bcolors.ENDC)
 destino_backup_file=PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql'
+#print destino_backup_file
+#exit()
 
 #realiza o backup
 backup_mysql(mysql_parametros[0],mysql_parametros[1],mysql_parametros[2],mysql_parametros[3],destino_backup_file)
 
-#Empacota Tudo em um unico arquivo
-arq1 = ""
-arq1 = arq1 + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_app.tar.gz '
-arq1 = arq1 + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_md.tar.gz '
-arq1 = arq1 + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql.gz '
+print "FIM AMIGAO...."
 
-empacota(prefix_tool+dir_name_limpo+".mdlbkp.tar" , arq1)
-
-#limpa Backups
-if 1 == 1:
-    cmd_del1 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_app.tar.gz '
-    cmd_del2 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'_md.tar.gz '
-    cmd_del3 = 'rm ' + PT_DESTINO+'/'+prefix_tool+dir_name_limpo+'.sql.gz '
-    os.system(cmd_del1)
-    os.system(cmd_del2)
-    os.system(cmd_del3)
-
-print ("")
-print ("")
-print ("")
-print ("")
-print ("MOODLE APPLICATION DOWNLOAD TOOL v.1")
-print ("")
-print ("========================================")
-print "End of process"
-print "========================================="
-print "Check if the backup file was created on:"
-print "[" +PT_DESTINO+'/'+prefix_tool+dir_name_limpo+".mdlbkp.tar"+"]"
+#a_retorno = teste_array(config_file)
+#print a_retorno[1]
 
 exit()
+
+print "Fim do Processo"
+exit()
+#copia pasta
+# /home/fabioalvaro/android-studio
+
+#barra de Progresso 
+toolbar_width = 40
+
+# setup toolbar
+sys.stdout.write("[%s]" % (" " * toolbar_width))
+sys.stdout.flush()
+sys.stdout.write("\b" * (toolbar_width+1)) # return to start of line, after '['
+
+for i in xrange(toolbar_width):
+    time.sleep(0.1) # do real work here
+    # update the bar
+    sys.stdout.write("-")
+    sys.stdout.flush()
+
+sys.stdout.write("\n")
+
+
+
+
+   # Now you can call printme function
+#printme("I'm first call to user defined function!")
+#printme("Again second call to the same function")
+
+
+
+
