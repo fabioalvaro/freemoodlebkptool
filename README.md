@@ -31,6 +31,7 @@ $ ln -s ~/opt/moodlebkptool/moodlerestoretool.py moodlerestoretool
 #Locally
 
 How to Install Locally on your default user:
+
 1)Download the zip version
     cd ~
     wget https://github.com/slackwarecps/freemoodlebkptool/archive/master.zip
